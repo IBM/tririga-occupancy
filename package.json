@@ -1,0 +1,17 @@
+{
+  "name": "building-insights-pattern",
+  "dependencies": {
+    "@cloudant/cloudant": "^3.0.2",
+    "@polymer/polymer": "^3.0.0",
+    "dotenv": "^6.2.0",
+    "google-chart-polymer-3": "^3.0.1",
+    "node-fetch": "^2.3.0"
+  },
+  "devDependencies": {
+    "@polymer/test-fixture": "^4.0.2",
+    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "wct-mocha": "^1.0.0"
+  }
+}
