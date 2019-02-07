@@ -74,8 +74,8 @@ sudo apt-get install -y kubectl
 brew install kubernetes-cli
 ```
 
-<!-- ### Node.js + NPM
-If expecting to run this application locally, please continue by installing [Node.js](https://nodejs.org/en/) runtime and NPM. We'd suggest using [nvm](https://github.com/creationix/nvm) to easily switch between node versions, which can be done with the following commands
+### Node.js + NPM
+If expecting to run this application locally, please continue by installing [Node.js](https://nodejs.org/en/) runtime and NPM. We'd suggest using [nvm](https://github.com/creationix/nvm) to easily switch between node versions, which can be done with the following commands.
 ```
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 # Place next three lines in ~/.bash_profile
@@ -84,7 +84,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 nvm install v8.9.0
 nvm use 8.9.0
-``` -->
+```
 
 <!-- ### Docker
 *Mac OSX* -->
@@ -166,6 +166,24 @@ java -jar WebViewSync_3.6.0.jar sync --all -->
 ### 3. Deploy Node.js application
 After configuring the TRIRIGA dashboard, we can continue on to deploy the nodejs backend. The purpose of this process is to add additional logic to periodically query for building sensor data, perform data transformations, and to persist data in a database.
 
+Fill out .env credentials for Building Insights and Cloudant instances like so
+```
+usr=<building insights username>
+password=<building insights password>
+instance_id=<>
+login_domain=https://<bi endpoint>-agg/api/v1/user/activity/login
+agg_domain=https://<bi endpoint>-agg.mybluemix.net/api
+kitt_domain=https://<bi endpoint>-KITT.mybluemix.net/api
+domain=https://<bi endpoint>-agg.mybluemix.net/api
+cloudant_username=<cloudant password>
+cloudant_password=<cloudant password>
+```
+
+```
+source .env
+```
+
+#### Hosted
 Create a kubernetes cluster
 ```
 ibmcloud ks cluster-create --name my_cluster
@@ -176,16 +194,16 @@ Export the `KUBECONFIG` path. This value will be printed just after creating the
 export KUBECONFIG=/Users/$USER/.bluemix/plugins/container-service/clusters/mycluster/kube-config-hou02-mycluster.yml
 ```
 
-Place the Cloudant credentials in a .env file like so
+<!-- Place the Cloudant credentials in a .env file like so
 ```
 CLOUDANT_USERNAME="username"
 CLOUDANT_PASSWORD="password"
 CLOUDANT_DB="buildingdb"
-```
+``` -->
 
 Create a kubernetes "secret", which allows the above credentials to be set as environment variables in the container runtime
 ```
-kubectl create secret generic cloudant-auth --from-file=.env
+kubectl create secret generic auth --from-file=.env
 ```
 
 Deploy the kubernetes application with the following command
@@ -200,6 +218,18 @@ ibmcloud ks clusters
 
 # Print workers associated with cluster, take note of public ip.
 ibmcloud ks workers <cluster_name>
+```
+
+#### Local
+```
+# Load credentials
+source .env
+
+# Start server
+node app.js
+
+# In a separate tab, run
+ngrok http 3000
 ```
 
 ### 4. Push Perceptive App to TRIRIGA
