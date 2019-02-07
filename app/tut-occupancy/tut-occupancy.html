@@ -8,8 +8,11 @@
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-badge/paper-badge.html">
+<link rel="import" href="../paper-checkbox/paper-checkbox.html">
+
 
 <link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../triplat-ds/triplat-ds.html">
 <link rel="import" href="../triblock-table/triblock-table.html">
 <link rel="import" href="../triblock-table-column/triblock-table-column.html">
 <link rel="import" href="../triplat-calendar-container/triplat-calendar-container.html">
@@ -17,6 +20,7 @@
 <link rel="import" href="../triplat-datetime-picker/triplat-datetime-picker.html">
 <link rel="import" href="../triplat-select-input/triplat-select-input.html">
 <link rel="import" href="../triplat-graphic/triplat-graphic.html">
+<link rel="import" href="../triplat-note/triplat-note.html">
 <link rel="import" href="../triblock-scroll-container/triblock-scroll-container.html">
 <link rel="import" href="../iron-dropdown/iron-dropdown.html">
 <link rel="import" href="../iron-collapse/iron-collapse.html">
@@ -32,16 +36,20 @@
 <script src="./leaflet.js"></script> -->
 
 <!-- Mapping  -->
+<!-- <script type="text/javascript" src="http://acba8347.ngrok.io/webcomponents-lite.js"></script> --> -->
 
 <!-- <link rel="import" href="leaflet-map.html">
-<link rel="import" href="leaflet-marker.html">
+<link rel="import" href="leaflet-marker.html"> -->
 
-<script type="text/javascript" src="webcomponents-lite.min.js"></script> -->
+<!-- <script type="text/javascript" src="webcomponents-lite.min.js"></script> -->
 <!-- Mapping end -->
 
 <link rel="import" href="tut-occupancy-styles.html">
 
 <!-- Mapping end -->
+<!-- <script type="text/javascript" src="./webcomponents-lite.min.js"></script> -->
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/polymer/0.3.2/platform.js"></script> -->
+<!-- <link rel="import" href="leaflet-map.html"> -->
 
 <dom-module id="tut-occupancy">
 	<template>
@@ -49,8 +57,8 @@
 		</style>
 
 		<triplat-route id="homeRoute" name="home" path="/"></triplat-route>
-		<triplat-route id="reportsRoute" name="reports" path="/reports"></triplat-route>
-		<triplat-route id="detailedRoute" name="detailed" path="/detailed"></triplat-route>
+		<!-- <triplat-route id="reportsRoute" name="reports" path="/reports"></triplat-route> -->
+		<triplat-route id="buildingRoute" name="buildingdetails" path="/building"></triplat-route>
 		<triplat-route id="watsonRoute" name="watson" path="/watson"></triplat-route>
 
 		<triblock-app-layout
@@ -67,11 +75,13 @@
 			<!-- <paper-listbox multi>
 				<paper-item value="{{ajaxBuildings}}"</paper-item>
 			<paper-listbox> -->
+			<!-- <paper-checkbox checked> Mock Data</paper-checkbox> -->
 
 			<triblock-banner-button tap-handler="_navigateToHome" home></triblock-banner-button>
 			<triblock-banner-button tap-handler="_navigateBack" back></triblock-banner-button>
+			<triblock-banner-button icon="ibm:table-tables" label="Details" triplat-route-id="buildingRoute"></triblock-banner-button>
 
-			<triblock-banner-button icon="ibm:table-tables" label="Reports" triplat-route-id="reportsRoute"></triblock-banner-button>
+			<!-- <triblock-banner-button icon="ibm:table-tables" label="Reports" triplat-route-id="reportsRoute"></triblock-banner-button> -->
 			<triblock-banner-button icon="ibm:world-globe" label="Watson Analytics" triplat-route-id="watsonRoute"></triblock-banner-button>
 
 			<triplat-route-selector content>
@@ -81,9 +91,7 @@
 						<div>
 						  <!-- <span><triplat-title title-label="Space Assessment"></triplat-title></span> -->
 							<span><p> Building Insights Dashboard </p></span>
-							<!-- <span>
-							 <triplat-date-picker value="{{value}}"></triplat-date-picker>
-  						</span> -->
+
 
 							 <!-- <paper-listbox selected="0">
 							   <paper-item>Item 1</paper-item>
@@ -95,33 +103,53 @@
 							  <paper-item>Item 2</paper-item>
 							</paper-menu> -->
 
-							<!-- <select multiple>
-							          <option value="American">American flamingo</option>
-							          <option value="Andean">Andean flamingo</option>
-							          <option value="Chilean">Chilean flamingo</option>
-							          <option value="Greater">Greater flamingo</option>
-							          <option value="James's">James's flamingo</option>
-							          <option value="Lesser">Lesser flamingo</option>
-							</select> -->
-							<div style="margin-left: auto;margin-right: auto;">
+							<!-- <div style="margin-left: auto;margin-right: auto;">
 						  <iron-image  style="width:100%; height:400px; margin:auto;" src="./esri_placeholder.png" sizing="contain"></iron-image>
-							</div>
-							<br>
+							</div> -->
 
-								<!-- <leaflet-map fit-to-markers>
-						      <leaflet-marker longitude="77.2" latitude="28.4">
-						        Marker I
-						      </leaflet-marker>
-						    </leaflet-map> -->
-							<!-- </span> -->
 
 							<!-- <span>
 							<triblock-table id="table1"  data="{{ajaxBuildings}}" style="width:100%; height:250px;">
 								    <triblock-table-column title="Occupancy Stats" property="id"></triblock-table-column>
 							</triblock-table>
 							</span> -->
-
 							<span>
+								<google-map id="map" style="height:33em;width:100%;" api-key="" latitude="37.77493" longitude="-122.41942" fit-to-markers><!-- gitignore -->
+								  <!-- <google-map-marker latitude="37.779" longitude="-122.3892"
+								      draggable="true" title="Go Giants!"></google-map-marker>
+								  <google-map-marker latitude="37.777" longitude="-122.38911"></google-map-marker> -->
+									<!-- <template is="dom-repeat" items='[{"latitude":41.65987117,"longitude":-73.9389003,"title":"B707"},{"latitude":41.65102,"longitude":-73.93259,"title":"B705"},{"latitude":41.655684,"longitude":-73.937963,"title":"B706"},{"latitude":41.65607742,"longitude":-73.93965132,"title":"B052"},{"latitude":41.657238,"longitude":-73.935661,"title":"B008"},{"latitude":12.95226468,"longitude":77.64390053,"title":"EGLC"},{"latitude":12.95155368,"longitude":77.64324653,"title":"EGLD"}]'> -->
+									<template is="dom-repeat" items="{{buildingCoords}}">
+										<google-map-marker latitude="{{item.latitude}}" longitude="{{item.longitude}}" title="{{item.title}}"></google-map-marker>
+									</template>
+								</google-map>
+							</span>
+							<span>
+							 <triplat-ds id="people" name="people" data="{{people}}"></triplat-ds>
+							 <triplat-ds id="occupancy" name="occupancy" data="{{triOccupancy}}"></triplat-ds>
+							</span>
+
+							<!-- <span>
+							 <triplat-graphic drawing-id="1026"></triplat-graphic>
+  						</span> -->
+							<div>
+							<!-- TODO, use redraw -->
+							<!-- "vAxis": {"minValue" : 0, "maxValue": 8}} -->
+
+							<!-- options='{"title": "Estate Occupancy (24hr)", "hAxis": {"format": "Q#", "ticks": [1, 2, 3, 4], "viewWindow": {"min": 0.5,"max": 4.5}}}' -->
+							<!-- options='{ "chm":"H,FF0000,0,18,1", "title": "Estate Occupancy (24hr)", "hAxis": {"format": "Q#", "ticks": [1, 2, 3, 4], "viewWindow": {"min": 0.5,"max": 4.5}}}' -->
+							<google-chart
+								style="width:100%; height:400px;"
+							  type='line'
+							  options='{"title": "Estate Occupancy (24hr)"}'
+								data="{{ajaxLineData}}"
+							</google-chart>
+							</div>
+
+							<br>
+							<br>
+							<span>
+								<!-- <leaflet-map> </leaflet-map> -->
 							<!-- TODO, table should reflect mutiple columns; building id, occupancy, percentage, prediction -->
 							<!-- TODO, add last update  -->
 							<triblock-table id="table1"  title="Occupancy Stats" data="{{ajaxSampleTable}}" style="width:100%; height:500px;">
@@ -130,42 +158,42 @@
 										<triblock-table-column title="Percentage" property="Percentage"></triblock-table-column>
 										<triblock-table-column title="Prediction (Next hour)" property="Prediction"></triblock-table-column>
 							</triblock-table>
+
 							</span>
 
+							<span>
+								<!-- <leaflet-map> </leaflet-map> -->
+							<!-- TODO, table should reflect mutiple columns; building id, occupancy, percentage, prediction -->
+							<!-- TODO, add last update  -->
+							<br>
+							<br>
+							<br>
+							<triblock-table id="table1"  title="Tririga Occupancy Stats" data="{{triOccupancy}}" style="width:100%; height:500px;">
+								    <triblock-table-column title="Building" property="buildingID"></triblock-table-column>
+										<triblock-table-column title="Occupancy" property="headcount"></triblock-table-column>
+										<triblock-table-column title="Usage" property="use"></triblock-table-column>
+							</triblock-table>
 
-							<!-- <span>
-							 <triplat-graphic drawing-id="1026"></triplat-graphic>
-  						</span> -->
-							<div>
-							<google-chart
-								style="width:100%; height:400px;"
-							  type='line'
-							  options='{"title": "Estate Occupancy (24hr)"}'
-								data="{{ajaxLineData}}"
-							</google-chart>
-							</div>
+							</span>
+
+							<br>
 							<div>
 								<span>
 								<google-chart
    								style="width:100%; height:400px;"
 								  type='column'
-								  options='{"title": "Building Occupancy vs Energy Consumption"}'
+								  options='{"title": "Building Occupancy vs Energy Consumption (24hr)"}'
 									data="{{ajaxOEData}}"
 								</google-chart>
 								</span>
+								<span>
 								<google-chart
 								  type='pie'
 								  options='{"title": "Buildings by Occupancy"}'
 									data="{{ajaxData}}"
 								</google-chart>
 								</span>
-								<paper-card heading="Last Updated">
-									<!-- <div class="card-content">"{{ajaxLineData}}"</div> -->
-									<div class="card-content">2019-01-20T00:00:00.000+0000</div>
-									<!-- <div class="card-actions">
-										<paper-button>Some action</paper-button>
-									</div> -->
-								</paper-card>
+
 							</div>
 							<br>
 							<br>
@@ -181,28 +209,7 @@
 							</span>
 							</div> -->
 
-							<div>
-								<paper-dropdown-menu label="Select Building" style="width:40%">  <!-- vertical-align> -->
-								  <paper-listbox attr-for-selected="id" class="dropdown-content" fallback-selection="default" selected="1">
-								    <template is="dom-repeat" items="{{ajaxBuildings}}">
-								      <paper-item id="{{item.id}}">{{item.id}}</paper-item>
-								    </template>
-								  </paper-listbox>
-								</paper-dropdown-menu>
-								<!-- <span> -->
-								  <triplat-datetime-picker style="width:40%" value="{{value}}">
-										<!-- <iron-icon label icon="av:play-arrow"></iron-icon> -->
-									  <span label>Select Time & Date</span>
-									</triplat-datetime-picker>
 
-								<triblock-table id="tablebuilding"  title="Building Detailed" data="{{ajaxSingleBuilding}}" style="width:100%; height:500px;">
-											<triblock-table-column title="Floor" property="id"></triblock-table-column>
-											<triblock-table-column title="Occupancy" property="Occupancy"></triblock-table-column>
-											<triblock-table-column title="Percentage" property="Percentage"></triblock-table-column>
-											<triblock-table-column title="Prediction (Next hour)" property="Prediction"></triblock-table-column>
-											<!-- <triblock-table-column title="Demographics?" property="Prediction"></triblock-table-column> -->
-								</triblock-table>
-							</div>
 							<span>
 								<iron-dropdown horizontal-align="right" vertical-align="top">
 								  <div class="dropdown-content">Hello!</div>
@@ -224,7 +231,6 @@
 							<!-- Where's the "TRIRIGAWEB.properties file", need to set the WEATHER_API_KEY property -->
 							<!-- </span> -->
 							<!-- <p>map</p> -->
-							<!-- <div id="map"></div> -->
 						</div>
 
 
@@ -233,13 +239,17 @@
 								 draggable="true" title="Go Giants!"></google-map-marker>
 						 <google-map-marker latitude="37.777" longitude="-122.38911"></google-map-marker>
 					 </google-map> -->
-						<iron-ajax auto url="http://5b7a5140.ngrok.io/getsampledata" handle-as="json" last-response="{{ajaxData}}"></iron-ajax>
-						<iron-ajax auto url="http://5b7a5140.ngrok.io/getsampleoedata" handle-as="json" last-response="{{ajaxOEData}}"></iron-ajax>
-						<iron-ajax auto url="http://5b7a5140.ngrok.io/getsamplelinedata" handle-as="json" last-response="{{ajaxLineData}}"></iron-ajax>
-						<iron-ajax auto url="http://5b7a5140.ngrok.io/getbuildings" handle-as="json" last-response="{{ajaxBuildings}}"></iron-ajax>
-						<iron-ajax auto url="http://5b7a5140.ngrok.io/getsampleoccupancy" handle-as="json" last-response="{{ajaxSampleOccupancy}}"></iron-ajax>
-						<iron-ajax auto url="http://5b7a5140.ngrok.io/getsampletabledata" handle-as="json" last-response="{{ajaxSampleTable}}"></iron-ajax>
-						<iron-ajax auto url="http://5b7a5140.ngrok.io/getsinglebuildingdata" handle-as="json" last-response="{{ajaxSingleBuilding}}"></iron-ajax>
+						<iron-ajax auto url="http://f5fa1e4e.ngrok.io/sample/pie" handle-as="json" last-response="{{ajaxData}}"></iron-ajax>
+						<iron-ajax auto url="http://f5fa1e4e.ngrok.io/sample/oe" handle-as="json" last-response="{{ajaxOEData}}"></iron-ajax>
+						<iron-ajax auto url="http://f5fa1e4e.ngrok.io/sample/line" handle-as="json" last-response="{{ajaxLineData}}"></iron-ajax>
+						<iron-ajax auto url="http://f5fa1e4e.ngrok.io/buildings" handle-as="json" last-response="{{ajaxBuildings}}"></iron-ajax>
+						<iron-ajax auto url="http://f5fa1e4e.ngrok.io/sample/occupancy" handle-as="json" last-response="{{ajaxSampleOccupancy}}"></iron-ajax>
+						<iron-ajax auto url="http://f5fa1e4e.ngrok.io/sample/table" handle-as="json" last-response="{{ajaxSampleTable}}"></iron-ajax>
+						<iron-ajax auto url="http://f5fa1e4e.ngrok.io/sample/detailed" handle-as="json" last-response="{{ajaxSingleBuilding}}"></iron-ajax>
+						<iron-ajax auto url="http://f5fa1e4e.ngrok.io/buildings/coords" handle-as="json" last-response="{{buildingCoords}}"></iron-ajax>
+						<iron-ajax auto url="http://f5fa1e4e.ngrok.io/occupancy" handle-as="json" last-response="{{occupancy}}"></iron-ajax>
+
+
 					</section>
 					<section route="detailed">
 						<span>Detailed View</span>
@@ -247,23 +257,122 @@
 						<!-- TODO, table should reflect mutiple columns; building id, occupancy, percentage, prediction -->
 						<!-- TODO, add last update  -->
 						<!-- Each row is a different floor -->
+						<span>
+						<paper-card heading="Last Updated">
+							<!-- <div class="card-content">"{{ajaxLineData}}"</div> -->
+							<div class="card-content">2019-01-20T00:00:00.000+0000</div>
+							<div id="map" ></div>
+						  <div class="card-content">{{buildings[0]}}</div>
+							<!-- <div class="card-actions">
+								<paper-button>Some action</paper-button>
+							</div> -->
+						</paper-card>
+						</span>
 						<triblock-table id="detailedtable"  title="Occupancy Stats" data="{{ajaxSampleTable}}" style="width:100%; height:250px;">
 									<triblock-table-column title="Building" property="id"></triblock-table-column>
 									<triblock-table-column title="Occupancy" property="Occupancy"></triblock-table-column>
 									<triblock-table-column title="Percentage" property="Percentage"></triblock-table-column>
 									<triblock-table-column title="Prediction (Next hour)" property="Prediction"></triblock-table-column>
 						</triblock-table>
+
+
 						<!-- TODO, add line graph? -->
 						</span>
+						<!-- <span>
+							<iframe scrolling="no" width="100%" height="100%" margin-top="100px" title="Cyclist Danger Zones"
+src="http://orcommunitycolleges.maps.arcgis.com/apps/webappviewer/index.html?id=f4c8ec20ff7d462dbc66e207cb1f2cfc"></iframe>
+
+						</span> -->
 						<!-- <iron-ajax auto url="http://fe1c7f46.ngrok.io/getsampledata" handle-as="json" last-response="{{ajaxData}}"></iron-ajax>
 						<iron-ajax auto url="http://fe1c7f46.ngrok.io/getsamplelinedata" handle-as="json" last-response="{{ajaxLineData}}"></iron-ajax>
 						<iron-ajax auto url="http://fe1c7f46.ngrok.io/getbuildings" handle-as="json" last-response="{{ajaxBuildings}}"></iron-ajax>
 						<iron-ajax auto url="http://fe1c7f46.ngrok.io/getsampleoccupancy" handle-as="json" last-response="{{ajaxSampleOccupancy}}"></iron-ajax>
 						<iron-ajax auto url="http://fe1c7f46.ngrok.io/getsampletabledata" handle-as="json" last-response="{{ajaxSampleTable}}"></iron-ajax> -->
 					</section>
-					<section route="reports">
-						<span>Reports Page</span>
+					<section route="buildingdetails">
+						<span>Building Details Page</span>
+						<span>
+						<paper-dropdown-menu label="Select Building" style="width:40%">  <!-- vertical-align> -->
+							<paper-listbox attr-for-selected="id" class="dropdown-content" fallback-selection="default" selected="1">
+								<template is="dom-repeat" items="{{ajaxBuildings}}">
+									<paper-item id="{{item.id}}">{{item.id}}</paper-item>
+								</template>
+							</paper-listbox>
+						</paper-dropdown-menu>
+
+						<iron-ajax auto url="http://f5fa1e4e.ngrok.io/cache.json" handle-as="json" last-response="{{cache}}"></iron-ajax>
+						<iron-ajax auto url="http://f5fa1e4e.ngrok.io/cachepriorities" handle-as="json" last-response="{{cachePriorities}}"></iron-ajax>
+						<iron-ajax auto url="http://f5fa1e4e.ngrok.io/buildings" handle-as="json" last-response="{{ajaxBuildings}}"></iron-ajax>
+						<iron-ajax auto url="http://f5fa1e4e.ngrok.io/cardtest" handle-as="json" last-response="{{cardTestData}}"></iron-ajax>
+
+						<!-- <span> -->
+						<!-- TODO, use array selector? -->
+					  <triplat-datetime-picker style="width:40%" value="{{value}}">
+							<!-- <iron-icon label icon="av:play-arrow"></iron-icon> -->
+							<span label>Select Time & Date</span>
+						</triplat-datetime-picker>
+						</span>
+
+						<!-- <span>
+						<template is="dom-repeat" items="{{buildings}}">
+						  <div>[[item.id]]</div>
+						</template>
+						</span> -->
+						<span>
+							<!-- <span>foobar bind</span>
+							<template is="dom-repeat" items="{{ajaxBuildings}}">
+								<paper-item id="{{item.id}}">{{item.id}}</paper-item>
+								<div> "{{item.id}}"</div>
+							</template> -->
+							<!-- <template is="dom-repeat" items="{{cache.payload['/v1/building/allpriorities/B052']['rows']}}"> -->
+
+							<!-- <template is="dom-repeat" items="{{cachePriorities}}">
+								<div class="card-content">{{item}}</div>
+							</template> -->
+
+							<template is="dom-repeat" items="{{cardTestData}}">
+								<!-- <div> "cardTestData"</div>
+								<paper-item id="{{item.id}}">{{item.id}}</paper-item>
+								<div> "{{item.updatetime}}"</div> -->
+								<paper-card style="width:40%" heading="{{item.id}}">
+									<div class="card-content">{{item.updatetime}}</div>
+									<div class="card-content">{{item.temp}}</div>
+									<div class="card-content">{{item.estate}}</div>
+
+								</paper-card>
+								<google-map id="map" style="height:20em;width:50%;float:right" api-key="" latitude="37.77493" longitude="-122.41942" fit-to-markers><!-- gitignore -->
+								  <!-- <google-map-marker latitude="37.779" longitude="-122.3892"
+								      draggable="true" title="Go Giants!"></google-map-marker>
+								  <google-map-marker latitude="37.777" longitude="-122.38911"></google-map-marker> -->
+									<!-- <template is="dom-repeat" items='[{"latitude":41.65987117,"longitude":-73.9389003,"title":"B707"},{"latitude":41.65102,"longitude":-73.93259,"title":"B705"},{"latitude":41.655684,"longitude":-73.937963,"title":"B706"},{"latitude":41.65607742,"longitude":-73.93965132,"title":"B052"},{"latitude":41.657238,"longitude":-73.935661,"title":"B008"},{"latitude":12.95226468,"longitude":77.64390053,"title":"EGLC"},{"latitude":12.95155368,"longitude":77.64324653,"title":"EGLD"}]'> -->
+									<!-- <template is="dom-repeat" items='{{buildingCoords}}'> -->
+										<google-map-marker latitude="{{item.coords.latitude}}" longitude="{{item.coords.longitude}}" title="{{item.title}}"></google-map-marker>
+									<!-- </template> -->
+
+								</google-map>
+							</template>
+
+
+						<!-- </span>
+						<triblock-table id="detailedtable"  title="Occupancy Stats" data="{{ajaxSampleTable}}" style="width:100%; height:250px;">
+									<triblock-table-column title="Building" property="id"></triblock-table-column>
+									<triblock-table-column title="Occupancy" property="Occupancy"></triblock-table-column>
+									<triblock-table-column title="Percentage" property="Percentage"></triblock-table-column>
+									<triblock-table-column title="Prediction (Next hour)" property="Prediction"></triblock-table-column>
+						</triblock-table>
+						</span> -->
+
+						<div>
+							<triblock-table id="tablebuilding"  title="Building Detailed" data="{{ajaxSingleBuilding}}" style="width:100%; height:500px;">
+										<triblock-table-column title="Floor" property="id"></triblock-table-column>
+										<triblock-table-column title="Occupancy" property="Occupancy"></triblock-table-column>
+										<triblock-table-column title="Percentage" property="Percentage"></triblock-table-column>
+										<triblock-table-column title="Prediction (Next hour)" property="Prediction"></triblock-table-column>
+							</triblock-table>
+						</div>
 					</section>
+
+
 					<section route="watson">
 						<span>Watson Analytics Page</span>
 					</section>
@@ -277,11 +386,11 @@
 <script defer>
 	// var map = L.map("map").setView([37.75, -122.23], 10);
 	// L.esri.basemapLayer("Topographic").addTo(map);
-	setTimeout(function(){
-		 console.log("drawing map")
-		 // var map = L.map('map').setView([51.505, -0.09], 13);
-		 // L.esri.basemapLayer("Topographic").addTo(map)
-	}, 3000);
+	// setTimeout(function(){
+	// 	 console.log("drawing map")
+	// 	 map = L.map('map').setView([51.505, -0.09], 13);
+	// 	 // L.esri.basemapLayer("Topographic").addTo(map)
+	// }, 3000);
 </script>
 <script>
 
@@ -320,8 +429,34 @@
 
 		toggle: function() {
 		  	this.$.collapse.toggle();
-		}
+		},
+
+		// TODO, perhaps add this as a way
+		// ready: function() {
+	      // Polymer.dom(this).querySelector('img').src = this.imageurl;
+	  // },
 
 	});
+
+	// marker = document.createElement('google-map-marker');
+	// marker.longitude =  "37.789"
+	// marker.latitude = "-122.3892"
+	// marker.icon = 'ICON_UR'
+	// document.querySelector('#map')
+	// Polymer.dom(document.getElementById("map")).appendChild(marker);
+	// document.getElementById("map").appendChild(marker);
+	// Polymer.dom(this.$.map).appendChild(marker);
+	// var card = document.getElementById("map")
+	// card.innerHTML;
+	// Polymer.dom(container).appendChild(card);
+	// var newDiv = document.createElement('div');
+	// setTimeout(function(){
+	// 	 console.log("drawing map")
+	// 	 map = L.map('map').setView([51.505, -0.09], 13);
+	// 	 // L.esri.basemapLayer("Topographic").addTo(map)
+	// }, 3000);
+	// var div = document.getElementById("map")
+
+	// Polymer.dom(this.root).appendChild(newDiv);
 
 </script>

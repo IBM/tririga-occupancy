@@ -204,14 +204,12 @@ ibmcloud ks workers <cluster_name>
 
 ### 4. Push Perceptive App to TRIRIGA
 
-Now that we have the public ip of the kubernetes cluster, we'll need to update the
-
 Open the file at `./app/tut-occupancy/tut-occupancy.html`, and edit lines 236-242, replacing each of the iron-ajax URLs with the public kubernetes cluster ip from the previous step.
 
 Next, run the following commands to push the application code to the TRIRIGA server.
 ```
 cd app
-java -jar WebViewSync_3.5.3.jar push -a
+java -jar WebViewSync_3.5.3.jar push -a --force
 ```
 
 If the push is successful, the application should be accessible at the following endpoint
