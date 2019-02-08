@@ -114,7 +114,7 @@
 							</triblock-table>
 							</span> -->
 							<span>
-								<google-map id="map" style="height:33em;width:100%;" api-key="" latitude="37.77493" longitude="-122.41942" fit-to-markers><!-- gitignore -->
+								<google-map id="map" style="height:33em;width:100%;" api-key="AIzaSyBmrSeMuKFVTu8pn6mdjxnVyHgfkJbz_UQ" latitude="37.77493" longitude="-122.41942" fit-to-markers><!-- gitignore -->
 								  <!-- <google-map-marker latitude="37.779" longitude="-122.3892"
 								      draggable="true" title="Go Giants!"></google-map-marker>
 								  <google-map-marker latitude="37.777" longitude="-122.38911"></google-map-marker> -->
@@ -141,7 +141,8 @@
 							<google-chart
 								style="width:100%; height:400px;"
 							  type='line'
-							  options='{"title": "Estate Occupancy (24hr)"}'
+							  options='{"title": "Estate Occupancy (24hr)", "series": {"0": { "lineDashStyle": [1, 1] }}}'
+
 								data="{{ajaxLineData}}"
 							</google-chart>
 							</div>
@@ -340,7 +341,7 @@ src="http://orcommunitycolleges.maps.arcgis.com/apps/webappviewer/index.html?id=
 									<div class="card-content">{{item.estate}}</div>
 
 								</paper-card>
-								<google-map id="map" style="height:20em;width:50%;float:right" api-key="" latitude="37.77493" longitude="-122.41942" fit-to-markers><!-- gitignore -->
+								<google-map id="map" style="height:20em;width:50%;float:right" api-key="AIzaSyBmrSeMuKFVTu8pn6mdjxnVyHgfkJbz_UQ" latitude="37.77493" longitude="-122.41942" fit-to-markers><!-- gitignore -->
 								  <!-- <google-map-marker latitude="37.779" longitude="-122.3892"
 								      draggable="true" title="Go Giants!"></google-map-marker>
 								  <google-map-marker latitude="37.777" longitude="-122.38911"></google-map-marker> -->
@@ -431,9 +432,13 @@ src="http://orcommunitycolleges.maps.arcgis.com/apps/webappviewer/index.html?id=
 		  	this.$.collapse.toggle();
 		},
 
-		// TODO, perhaps add this as a way
-		// ready: function() {
-	      // Polymer.dom(this).querySelector('img').src = this.imageurl;
+		// TODO test and replace ngrok ips with this var
+		server: "ngrok / kubernetes ip + port"
+
+		// TODO, perhaps add this as a way to redraw element on change
+		// onSelect: function() {
+	      // Polymer.dom(this).querySelector('img').src = ...;
+				//
 	  // },
 
 	});

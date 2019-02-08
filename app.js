@@ -176,7 +176,6 @@ var initCloudant = function() {
 
 // ESTATE Dashboard API calls
 var estateEndpoints = require('./data/estateEndpoints.json')
-
 // Occupancy
 // buildingAPIList.push("v1/dtl/FootFallPredictionEstate?timeOffset=+05:30")
 
