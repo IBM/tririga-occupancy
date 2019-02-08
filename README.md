@@ -27,6 +27,7 @@ In this Code Pattern, we'll go through the process of creating a custom Applicat
 <img src="https://i.imgur.com/imHCJMb.png" height="500" width="800" />
 </p>
 <!-- Optionally, update this section when the video is created -->
+
 # Watch the Video
 [![](https://img.youtube.com/vi/69QPCkQNsJ8/1.jpg)](https://www.youtube.com/watch?v=69QPCkQNsJ8)
 
