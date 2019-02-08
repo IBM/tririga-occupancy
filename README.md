@@ -23,6 +23,9 @@ In this Code Pattern, we'll go through the process of creating a custom Applicat
 2. Node.js backend requests updated dataset from BI APIs every hour, and persists certain values into a Cloudant database. This allows for us to build a chronological hourly dataset which can be used to create custom analytics models/graphics.
 3. Custom TRIRIGA app pulls formatted sensor data from Node.js backend to render graphics and tables.
 
+<p align="center">
+<img src="https://i.imgur.com/imHCJMb.png" height="500" width="800" />
+</p>
 <!-- Optionally, update this section when the video is created -->
 # Watch the Video
 [![](https://img.youtube.com/vi/69QPCkQNsJ8/1.jpg)](https://www.youtube.com/watch?v=69QPCkQNsJ8)
@@ -106,7 +109,6 @@ To upload our application to TRIRIGA, we'll need to first enter a few metadata r
 
 Log in to the TRIRIGA Dashboard and click on the "Tools" section in the top menu
 <!-- TODO, add picture -->
-
 
 Next, click "Model Designer"
 
