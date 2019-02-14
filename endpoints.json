@@ -1,0 +1,120 @@
+FootFallByHourEstate?timeOffset=+05:30
+{
+    "next": {
+        "unit": "count",
+        "value": 76
+    },
+    "updatedTime": "2018-02-08T04:30:00.023+0530",
+    "previous": {
+        "unit": "count",
+        "value": 32
+    },
+    "timeOffset": "+05:30",
+    "extended": "demographics",
+    "demographics": {
+        "men": {
+            "count": 9,
+            "averageAge": 47
+        },
+        "women": {
+            "count": 9,
+            "averageAge": 26
+        }
+    }
+}
+
+dtl/FootFallByHourPopupEstate?timeOffset=+05:00
+
+{
+    "updatedTime": "2018-02-08T04:00:00.023+0500",
+    "data": {
+        "next": [312, 120, 120, 44, 158, 132,76],
+        "previous": [16, 0, 52, 80, 80,  80, 80],
+        "time": [
+            "2018-02-02T00:00:00.000+0000",
+            "2018-02-03T00:00:00.000+0000",
+            "2018-02-04T00:00:00.000+0000",
+            "2018-02-05T00:00:00.000+0000",
+            "2018-02-06T00:00:00.000+0000",
+            "2018-02-07T00:00:00.000+0000",
+            "2018-02-08T00:00:00.000+0000"
+        ]
+    },
+    "timeOffset": "+05:00"
+}
+
+
+dtl/FootFallPredictionEstate?timeOffset=+05:30
+{
+    "next": {
+        "unit": "count",
+        "value": 128
+    },
+    "updatedTime": "2018-02-08T04:30:00.023+0530",
+    "previous": {
+        "unit": "count",
+        "value": 158
+    },
+    "timeOffset": "+05:30"
+}
+
+dtl/FootFallPredictionPopupBuilding?buildingName=EGLC
+{
+    "updatedTime": "2018-02-08T04:30:00.023+0530",
+    "data": {
+        "next": [12, 32, 24],
+        "previous": [60, 46, 28 ],
+        "time": [
+            "2018-02-08T00:00:00.000+0000",
+            "2018-02-09T00:00:00.000+0000",
+            "2018-02-10T00:00:00.000+0000"
+        ]
+    },
+    "city": "Bengaluru",
+    "timeOffset": "+05:30"
+}
+
+dtl/FootFallByFloor?buildingName=EGLC&floorName=Munich_FLOOR1
+{
+    "updatedTime": "2018-02-07T23:00:00.023+0000",
+    "data": [
+        {
+            "name": "01",
+            "value": 14,
+            "percentage": 28
+        },
+        {
+            "name": "02",
+            "value": 14,
+            "percentage": 17.5
+        }
+    ],
+    "city": "Bengaluru",
+    "timeOffset": "+05:30"
+}
+
+dtl/FootFallByFloorDetailPerFloor?buildingName=Munich&floorName=Munich_FLOOR1
+{
+    "updatedTime": "2018-02-07T23:00:00.023+0000",
+    "data": {
+        "next": [20, 78, 30, 30, 11, 51, 43],
+        "previous": [6.5, 4, 5.75, 2.5, 10, 11.5, 7],
+        "time": [
+            "2018-02-01T00:00:00.000+0000",
+            "2018-02-02T00:00:00.000+0000",
+            "2018-02-03T00:00:00.000+0000",
+            "2018-02-04T00:00:00.000+0000",
+            "2018-02-05T00:00:00.000+0000",
+            "2018-02-06T00:00:00.000+0000",
+            "2018-02-07T00:00:00.000+0000"
+        ]
+    },
+    "city": "Munich",
+    "name": "Munich_FLOOR1",
+    "threshold": 50,
+    "timeOffset": "+00:00",
+    "region": {
+        "start": 20,
+        "end": 40
+    }
+}
