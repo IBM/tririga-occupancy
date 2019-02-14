@@ -32,9 +32,11 @@ When the reader has completed this Code Pattern, they will understand how to:
 3. Node.js backend transforms data into required format for charts/graphs.
 4. Custom TRIRIGA app pulls formatted sensor data from Node.js backend, and renders graphics and tables.
 
-<p align="center">
+![Architecture](/images/arch.png)
+
+<!-- <p align="center">
 <img src="https://i.imgur.com/lTR8fH6.png" height="500" width="800" />
-</p>
+</p> -->
 <!-- Optionally, update this section when the video is created -->
 <!-- # Watch the Video
 
@@ -251,7 +253,7 @@ Open the file at `./app/tut-occupancy/tut-occupancy.html`, and edit lines 236-24
 Next, run the following commands to push the application code to the TRIRIGA server.
 ```
 cd app
-java -jar WebViewSync_3.5.3.jar push -a --force
+java -jar WebViewSync_3.5.3.jar push -a
 ```
 
 If the push is successful, the application should be accessible at the following endpoint
