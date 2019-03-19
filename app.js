@@ -7,10 +7,10 @@ const Cloudant = require('@cloudant/cloudant');
 const schedule = require('node-schedule');
 const async = require('async');
 const await = require('await');
+const fs = require('fs');
 const port = 3000
 // const _ = require('lodash')
 app.use(cors())
-console.log("serving libs at" + __dirname + '/app/public')
 app.use(express.static(__dirname + '/app/public'));
 app.use("/styles", express.static(__dirname + '/styles'));
 app.use(express.static(__dirname + '/data'));
@@ -26,7 +26,7 @@ app.get('/refreshtoken', (req, res) => {
 app.get('/cachepriorities', (req, res) => {
   // fs.read('./data/cache.json')
   var c = require('./data/cache.json')
-  res.json (c.payload['/v1/building/allpriorities/B052']['rows'])
+  res.json(c.payload['/v1/building/allpriorities/B052']['rows'])
 
   //bearerToken = json.token) //console.log(json))
 })
@@ -73,7 +73,7 @@ var refreshToken = async () => {
       username: process.env.usr,
       password: process.env.password
     })
-  })
+  }).catch(err => console.log(err))
   const data = await response.json()
   bearerToken = data.token;
   return data.token;
@@ -149,6 +149,8 @@ var parseBuildings = function(json) {
   // return JSON.stringify([{id: "building1"}, {id: "building2"}])
 }
 
+var cloudantInitialized = false
+
 var initCloudant = function() {
   console.log("Initializing Cloudant")
   var username = process.env.cloudant_username
@@ -158,12 +160,18 @@ var initCloudant = function() {
     account: username,
     password: password
   })
-  cachedb = cloudant.db.use(db_name, function(err, body) {
-    if (err) {
-      console.log(err)
-      cloudant.db.create(db_name, function(err, body) {
-        console.log(err)
-        console.log(body)
+
+  cloudant.db.list().then((dbs) => {
+    if (dbs.includes(db_name)) {
+      cachedb = cloudant.db.use(db_name)
+      cloudantInitialized = true
+    } else {
+      console.log("creating db")
+      cloudant.db.create(db_name).then(() => {
+        cachedb = cloudant.db.use(db_name)
+        cloudantInitialized = true
+      }).catch(() => {
+        console.log("error creating db")
       })
     }
   })
@@ -211,21 +219,14 @@ var getBuildings = async () => {
       'Authorization': `Bearer ${bearerToken}`
     }
   })
-  console.log(response)
-
   const result = await response.json()
-  console.log(result)
   buildings = await parseBuildings(result['ref-in'])
   return buildings
-  // .then(json => {
-  //   console.log(json);
-  //   buildings = parseBuildings(json['ref-in'])
-  // }).then(() => res.send(buildings))
-  // currently returns an array of arrays [["id", "building1"], ["id", "building2"]]
 }
 
 // coords, builings are sent
 var getCoords = async () => {
+  console.log("Getting coordinates for each building")
   var uri = process.env.agg_domain + "/v1/estate/anomalies"
   console.log(uri)
   const response = await fetch(uri, {
@@ -236,13 +237,7 @@ var getCoords = async () => {
   })
   const result = await response.json()
   coords = parseCoords(result.marker)
-
   return coords
-
-  // .then(result => result.json()).then(json => {
-  //   coords = parseCoords(json.marker)
-  //   console.log(json)
-  // })
 }
 
 // get list of buildings
@@ -266,24 +261,44 @@ app.get('/occupancy', (req, res) => {
 
 app.get('/cardtest', (req, res) => {
 
-  res.json([{"id": "B052", "updatetime":"00:02:00", "temp":"50F", "coords": {"latitude":41.65607742,"longitude":-73.93965132}, "estate":"Town of Poughkeepsie, USA"}])
+  res.json([{
+      "id": "B052",
+      "updatetime": "00:02:00",
+      "temp": "50F",
+      "coords": {
+        "latitude": 41.65607742,
+        "longitude": -73.93965132
+      },
+      "estate": "Town of Poughkeepsie, USA"
+    },
+    {
+      "id": "B706",
+      "updatetime": "00:02:00",
+      "temp": "75F",
+      "coords": {
+        "latitude": 41.65607747,
+        "longitude": -73.93961332
+      },
+      "estate": "Town of Poughkeepsie, USA"
+    }
+
+  ])
 })
 
 app.get('/building/:id', (req, res) => {
   // res.send(occupancyData)
-  coords.filter(function(b){ return b.title == 'EGLD' })
+  coords.filter(function(b) {
+    return b.title == 'EGLD'
+  })
   if (req.params.type == "table") {
 
   }
 })
 
-
 var occupancyData = {} // updated hourly
 var buildingData = {} // static;
 var buildings = []
 var floors = []
-
-
 
 // First get list of buildings
 // Then get building floors
@@ -291,20 +306,27 @@ var floors = []
 var getFloors = async () => {
   var endpoint = "/v1/dtl/FootFallByFloor?buildingName="
   var uri = process.env.agg_domain + endpoint
-  console.log("Getting floors")
+
   console.log(uri)
   await buildings.map((building) => {
-    console.log(uri + building['id'])
+    console.log("Getting floors for building " + building['id'])
+    // console.log(uri + building['id'])
     fetch(uri + building['id'], {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${bearerToken}`
       }
-    }).then(result => result.json()).then((json) => {
-      buildingData[building['id']] = {
-        "floors": json.data //_.pick(json.data, ["name"]) //_.pick(json.data.floors, ["name"])
+    }).then((response) => {
+      if (response.status && response.status == 200) {
+        response.json().then((json) => {
+          buildingData[building['id']] = {
+            "floors": json.data //_.pick(json.data, ["name"]) //_.pick(json.data.floors, ["name"])
+          }
+        })
+      } else {
+        console.log("Error obtaining list of floors for building: " + building['id'])
       }
-    }) //result.json())
+    })
   })
 }
 // Should be able to loop through
@@ -329,6 +351,15 @@ var getResource = async (uri) => {
   return result
 }
 
+var persistSensorData = function() {
+  if (cloudantInitialized) {
+    // save in cloudant
+  } else {
+    // save in data/cache.json
+
+  }
+}
+
 var refreshSensorData = function() {
   var timeOffset = "+05:00"
   var options = {
@@ -337,52 +368,106 @@ var refreshSensorData = function() {
       'Authorization': `Bearer ${bearerToken}`
     }
   }
-  console.log(options)
   console.log("Refreshing data")
-  occupancyEndpoints.map((endpoint) => {
+  occupancyEndpoints.map((endpoint, idx) => {
     var uri = process.env.agg_domain + endpoint
     var name = endpoint.split('/').slice(-1)[0].split("?")[0].toLowerCase()
-    console.log(uri)
-    console.log(name)
     occupancyData[name] = {}
     if (name.includes('estate')) {
       console.log("Pulling data for estate")
       var params = `?timeOffset=${timeOffset}`
-      console.log(uri + params)
-      fetch(uri + params, options).then(response => {console.log(response) ; response.json()}).then((json) => occupancyData[name] = json)
-
+      // console.log(uri + params)
+      fetch(uri + params, options).then(response => {
+        // console.log(response);
+        // if response.status
+        // console.log(response.status)
+        if (response.status && response.status == 200) {
+          console.log("Data " + name + " retrieved for estate")
+          response.json().then((json) => occupancyData[name] = json)
+        } else {
+          // console.log("http err " + response.status + " fetching data for " + name + " : " + params)
+        }
+      })
     } else if (name.includes('building')) {
       buildings.map((building) => {
-        console.log("Pulling building data")
-
+        console.log("Pulling " + name + " data for building: " + building['id'])
         var params = `?timeOffset=${timeOffset}&buildingName=${building['id']}`
-        console.log(uri + params)
-        fetch(uri + params, options).then(response => response.json()).then((json) => occupancyData[name][building['id']] = json)
+        fetch(uri + params, options).then((response) => {
+          if (response.status && response.status == 200) {
+            console.log("Data " + name + " retrieved for building: " + building['id'])
+            response.json().then((json) => occupancyData[name][building['id']] = json)
+          } else {
+            // console.log("http err " + response.status + " fetching data for " + name + " : " + params)
+          }
+        })
         // fetch(uri, options).then(response =>
         //    occupancyData[name][building['id']] = response.json())
       })
     } else if (name.includes('floor')) {
       buildings.map((building) => {
-        // If this building has any registered floors
+        // Check if this building has any registered floors
         if ((buildingData[building['id']] && buildingData[building['id']].floors)) {
           var floors = buildingData[building['id']].floors
         } else {
+          // console.log("No floors found for building " + building['id'])
           var floors = []
         }
         // Loop through floors
         floors.map((floor) => {
           var params = `?buildingName=${building['id']}&floorName=${floor['name']}`
-          console.log("Pulling floor data")
-          console.log(uri + params)
-          fetch(uri + params, options).then(response => response.json()).then((json) => {
-            occupancyData[name][building['id']] = {
-              "floors": json
+          console.log("Pulling floor data" + params)
+          // console.log(uri + params)
+          fetch(uri + params, options).then((response) => {
+            if (response.status && response.status == 200) {
+              console.log("Data " + name + " retrieved for floor " + building['id'] + ' | ' + floor['name'])
+              response.json().then((json) => {
+                occupancyData[name][building['id']] = {
+                  "floors": json
+                }
+              })
+            } else {
+              // console.log("http err " + response.status + " fetching data for " + name + " : " + params)
             }
           })
         })
       })
     }
+    if (idx == occupancyEndpoints.length - 1) {
+      console.log("Refresh complete.")
+      // if (cloudantInitialized) {
+      // console.log("Saving to cloudant.")
+
+      // save occupancyData in cloudant
+      // } else {
+      setTimeout(function() {
+        if (cloudantInitialized) {
+          cachedb.get('latest').then( (doc) => {
+            // doc._id
+            // doc._rev
+            cachedb.insert(Object.assign(occupancyData, {_id: doc._id, _rev: doc._rev }), 'latest').then((data) => {
+              console.log("inserting doc")
+              console.log(data)
+            }).catch((err) => {
+              console.log("error inserting doc")
+              console.log(err)
+            })
+          } )
+
+
+        }
+        var filename = "./data/cache.json"
+        console.log("Writing to file ")
+        fs.writeFile(filename, JSON.stringify(occupancyData), function(err) {
+          if (err) {
+            return console.log(err);
+          }
+        })
+      }, 10000);
+      // fs.writeFile("./data/cache1.json", JSON.stringify(occupancyData))
+      // }
+    }
   })
+
 }
 // {
 //   FootFallByHourEstate: {
@@ -595,6 +680,7 @@ var buildings = []
 var floors = []
 
 refreshToken().then((token) => {
+  initCloudant()
   getBuildings().then((buildings) => {
     getFloors().then(() => {
       getCoords().then(() => {
@@ -615,12 +701,12 @@ refreshToken().then((token) => {
 
 var cronInterval = '5 * * * *' // 5th minute of every hour.
 schedule.scheduleJob(cronInterval, function() {
-    refreshSensorData();
-    refreshToken();
-//   async.series([
-//     refreshToken(), // this needs to be done daily, not hourly
-//     refreshData()
-//   ]);
+  refreshSensorData();
+  refreshToken();
+  //   async.series([
+  //     refreshToken(), // this needs to be done daily, not hourly
+  //     refreshData()
+  //   ]);
 });
 
 
@@ -731,7 +817,7 @@ app.get('/sample/:type', (req, res) => {
     res.send(gchartsData)
 
   } else if (req.params.type == "line") {
-    var columns = ['Time'].concat(buildings.map ( (building) => building['id'] ))
+    var columns = ['Time'].concat(buildings.map((building) => building['id']))
     var hours = 12
     var start = 6
     // var chartVals = Array.from({length: hours}, (x,i) => [(parseInt(i) + start) + ":00:00"].concat(genListRandomInts(30 ,buildings.length)))
@@ -792,10 +878,10 @@ app.get('/sample/:type', (req, res) => {
 // }
 
 var genListRandomInts = function(max, numVals) {
-  var arr = [ Math.floor(Math.random() * Math.floor(max)) ]
+  var arr = [Math.floor(Math.random() * Math.floor(max))]
   for (i = 0; i < numVals - i; i++) {
     console.log(i)
-    arr.push(Math.floor(Math.random() * Math.floor(max)) );
+    arr.push(Math.floor(Math.random() * Math.floor(max)));
     if (i == (numVals)) {
       return arr
     }
