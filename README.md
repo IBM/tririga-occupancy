@@ -238,6 +238,9 @@ ibmcloud ks workers <cluster_name>
 # Load credentials
 source .env
 
+# Install Dependencies
+npm install
+
 # Start server
 node app.js
 
