@@ -27,10 +27,9 @@ When the reader has completed this Code Pattern, they will understand how to:
 
 <!--Optionally, add flow steps based on the architecture diagram-->
 ## Flow
-1. Building Insights (BI) instance publishes hourly sensor data.
-2. Node.js backend requests updated dataset from BI APIs every hour, and persists values into a Cloudant database. This allows for us to build a chronological hourly dataset which can be used to create custom analytics models/graphics.
-3. Node.js backend transforms data into required format for charts/graphs.
-4. Custom TRIRIGA app pulls formatted sensor data from Node.js backend, and renders graphics and tables.
+1. Node.js back-end requests updates dataset from Building Insights APIs every hour and persists certain values into a Cloudant database. This allows for us to build a chronological hourly dataset, which can be used to create custom analytics models/graphics.
+
+2. Custom TRIRIGA app pulls formatted sensor data from Node.js back end to render graphics and tables.
 
 ![Architecture](/images/arch.png)
 
