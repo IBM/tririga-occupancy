@@ -153,7 +153,7 @@ Return to the "Tools" section again, and select "Application designer". The same
 </p>
 
 
-Return to the "Tools" section a final time, and select "Web View Designer". The name entered in the previous steps can go into the "Name", and "ID" fields. The "Exposed Name" field will need to include a underscore, we'll use "tut-occupancy" in this case.
+Return to the "Tools" section a final time, and select "Web View Designer". The name entered in the previous steps can go into the "Name", and "ID" fields. The "Exposed Name" field will need to include an underscore, we'll use "tut-occupancy" in this case.
 
 <p align="center">
 <img src="https://i.imgur.com/DXp1OYC.png" height="200" width="600" />
@@ -162,7 +162,7 @@ Return to the "Tools" section a final time, and select "Web View Designer". The 
 
 Next, open a terminal and navigate to the `app` directory
 
-Run the following command using the included `WebViewSync_3.6.0.jar` binary to authenticate to the TRIRIGA server. This will prompt for the URL, and credentials, and place them in a `WebViewSync.json` file.
+Run the following command using the included `WebViewSync_3.6.0.jar` binary to authenticate to the TRIRIGA server. This will prompt for the URL, and password, and place them in a `WebViewSync.json` file.
 ```
 java -jar WebViewSync_3.6.0.jar init
 ```
@@ -179,7 +179,8 @@ java -jar WebViewSync_3.6.0.jar sync --all -->
 ### 3. Deploy Node.js application
 After configuring the TRIRIGA dashboard, we can continue on to deploy the nodejs backend. The purpose of this process is to add additional logic to periodically query for building sensor data, perform data transformations, and to persist data in a database.
 
-Fill out .env credentials for Building Insights and Cloudant instances like so
+Fill out your credientals from the Building Insights and Cloudant services in the .env file as shown below: 
+
 ```
 usr=<building insights username>
 password=<building insights password>
@@ -266,7 +267,7 @@ If the push is successful, the application should be accessible at the following
 <img src="https://i.imgur.com/UUPBGVd.png" height="500" width="800" />
 </p>
 
-Each of the visuals in the front end application implemented as Polymer elements, which allows for us to reference packages in a HTML like syntax.
+Each of the visuals in the front-end application implemented as Polymer elements, which allows for us to reference packages in a HTML like syntax.
 
 First, we'll generate a table that shows a list of each of the buildings, and their last reported occupancy. This shows how close each building is to capacity, as well as the predicted occupancy in the next hour.
 
