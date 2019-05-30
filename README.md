@@ -27,10 +27,9 @@ When the reader has completed this Code Pattern, they will understand how to:
 
 <!--Optionally, add flow steps based on the architecture diagram-->
 ## Flow
-1. Building Insights (BI) instance publishes hourly sensor data.
-2. Node.js backend requests updated dataset from BI APIs every hour, and persists values into a Cloudant database. This allows for us to build a chronological hourly dataset which can be used to create custom analytics models/graphics.
-3. Node.js backend transforms data into required format for charts/graphs.
-4. Custom TRIRIGA app pulls formatted sensor data from Node.js backend, and renders graphics and tables.
+1. Node.js back-end requests updates dataset from Building Insights APIs every hour and persists certain values into a Cloudant database. This allows for us to build a chronological hourly dataset, which can be used to create custom analytics models/graphics.
+
+2. Custom TRIRIGA app pulls formatted sensor data from Node.js back end to render graphics and tables.
 
 ![Architecture](/images/arch.png)
 
@@ -46,7 +45,7 @@ When the reader has completed this Code Pattern, they will understand how to:
 
 <!-- there are MANY updates necessary here, just screenshots where appropriate -->
 1. [Deploy Cloud Services](#1-deploy-cloud-services)
-2. [Register Application In TRIRIGA Dashboard](#2-generate-application-in-tririga-dashboard)
+2. [Generate Application In TRIRIGA Dashboard](#2-generate-application-in-tririga-dashboard)
 3. [Deploy Node.js application](#3-deploy-nodejs-application)
 4. [Push Perceptive App to TRIRIGA](#4-push-perceptive-app-to-tririga)
 
@@ -107,7 +106,7 @@ nvm use 8.9.0
 # Steps
 <!-- Use the ``Deploy to IBM Cloud`` instructions **OR** create the services and run locally. -->
 
-### 1. Provision Watson services via IBM Cloud and IBM Marketplace dashboards
+### 1. Deploy Cloud Services
 
 Create the following services:
 * [**TRIRIGA**](https://www.ibm.com/us-en/marketplace/ibm-tririga)
@@ -329,14 +328,11 @@ And the chart expects an "array of arrays" like so.
 
 #### Additional Docs
 
-TRIRIGA Perceptive App Documentation
-https://www.ibm.com/developerworks/community/wikis/home?lang=en#!/wiki/IBM%20TRIRIGA1/page/What%20are%20Perceptive%20apps
+[TRIRIGA Perceptive App Documentation](https://www.ibm.com/developerworks/community/wikis/home?lang=en#!/wiki/IBM%20TRIRIGA1/page/What%20are%20Perceptive%20apps)
 
-Perceptive Space Assessment
-https://www.ibm.com/developerworks/community/wikis/home?lang=en#!/wiki/IBM%20TRIRIGA1/page/What%27s%20the%20new%20Space%20Assessment%20app
+[Perceptive Space Assessment](https://www.ibm.com/developerworks/community/wikis/home?lang=en#!/wiki/IBM%20TRIRIGA1/page/What%27s%20the%20new%20Space%20Assessment%20app)
 
-UX Framework Starter Tutorial
-https://www.youtube.com/watch?v=69QPCkQNsJ8
+[UX Framework Starter Tutorial](https://www.youtube.com/watch?v=69QPCkQNsJ8)
 
 ## License
 
