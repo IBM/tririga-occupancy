@@ -76,6 +76,7 @@ var refreshToken = async () => {
   }).catch(err => console.log(err))
   const data = await response.json()
   bearerToken = data.token;
+  // console.log("token received " + data.token)
   return data.token;
 
   // .then(res => res.json()
@@ -209,7 +210,6 @@ var occupancyEndpoints = require('./data/occupancyEndpoints.json')
 // }
 
 
-
 var getBuildings = async () => {
   console.log("Getting list of buildings")
   var uri = process.env.kitt_domain + `/v1/graph/${process.env.instance_id}/instance/${process.env.instance_id}`
@@ -220,7 +220,8 @@ var getBuildings = async () => {
     }
   })
   const result = await response.json()
-  buildings = await parseBuildings(result['ref-in'])
+  console.log(result)
+  buildings = await parseBuildings(result['refin'])
   return buildings
 }
 
