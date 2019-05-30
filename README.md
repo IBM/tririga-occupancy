@@ -45,7 +45,7 @@ When the reader has completed this Code Pattern, they will understand how to:
 
 <!-- there are MANY updates necessary here, just screenshots where appropriate -->
 1. [Deploy Cloud Services](#1-deploy-cloud-services)
-2. [Register Application In TRIRIGA Dashboard](#2-generate-application-in-tririga-dashboard)
+2. [Generate Application In TRIRIGA Dashboard](#2-generate-application-in-tririga-dashboard)
 3. [Deploy Node.js application](#3-deploy-nodejs-application)
 4. [Push Perceptive App to TRIRIGA](#4-push-perceptive-app-to-tririga)
 
@@ -106,7 +106,7 @@ nvm use 8.9.0
 # Steps
 <!-- Use the ``Deploy to IBM Cloud`` instructions **OR** create the services and run locally. -->
 
-### 1. Provision Watson services via IBM Cloud and IBM Marketplace dashboards
+### 1. Deploy Cloud Services
 
 Create the following services:
 * [**TRIRIGA**](https://www.ibm.com/us-en/marketplace/ibm-tririga)
