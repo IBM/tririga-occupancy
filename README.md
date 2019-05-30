@@ -328,14 +328,11 @@ And the chart expects an "array of arrays" like so.
 
 #### Additional Docs
 
-TRIRIGA Perceptive App Documentation
-https://www.ibm.com/developerworks/community/wikis/home?lang=en#!/wiki/IBM%20TRIRIGA1/page/What%20are%20Perceptive%20apps
+[TRIRIGA Perceptive App Documentation](https://www.ibm.com/developerworks/community/wikis/home?lang=en#!/wiki/IBM%20TRIRIGA1/page/What%20are%20Perceptive%20apps)
 
-Perceptive Space Assessment
-https://www.ibm.com/developerworks/community/wikis/home?lang=en#!/wiki/IBM%20TRIRIGA1/page/What%27s%20the%20new%20Space%20Assessment%20app
+[Perceptive Space Assessment](https://www.ibm.com/developerworks/community/wikis/home?lang=en#!/wiki/IBM%20TRIRIGA1/page/What%27s%20the%20new%20Space%20Assessment%20app)
 
-UX Framework Starter Tutorial
-https://www.youtube.com/watch?v=69QPCkQNsJ8
+[UX Framework Starter Tutorial](https://www.youtube.com/watch?v=69QPCkQNsJ8)
 
 ## License
 
