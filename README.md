@@ -188,7 +188,7 @@ login_domain=https://<bi endpoint>-agg/api/v1/user/activity/login
 agg_domain=https://<bi endpoint>-agg.mybluemix.net/api
 kitt_domain=https://<bi endpoint>-KITT.mybluemix.net/api
 domain=https://<bi endpoint>-agg.mybluemix.net/api
-cloudant_username=<cloudant password>
+cloudant_username=<cloudant username>
 cloudant_password=<cloudant password>
 ```
 
